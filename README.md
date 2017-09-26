@@ -5,6 +5,8 @@ A JavaScript component for adding instructions for users to help them navigate t
 
 [See the detailed Hint description and API in the Webix documentation](https://docs.webix.com/desktop__hint.html).
 
+[Live Demo](http://webix-hub.github.io/hint-component/samples/01_init.html)
+
 ## How to View the Samples
 
 Go to the folder and run the following commands:
