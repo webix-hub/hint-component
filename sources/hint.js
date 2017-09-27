@@ -57,7 +57,7 @@ webix.protoUI({
 		this.callEvent("onAfterStart", []);
 	},
 	_drawHint() {
-		let settings = this._settings;
+		let settings = this.config;
 		this.$view.innerHTML += `<div class="webix_hint">
 			<span class='webix_hint_title'>${this._step.title?this._step.title:""}</span>
 			<p class="webix_hint_label">${this._step.text}</p>
@@ -154,7 +154,7 @@ webix.protoUI({
 			webix.html.addCss(this._prevButton, "webix_hint_button_hidden");
 		}
 		if(this._i === this.config.steps.length -1) { // next button text
-			this._nextButton.innerHTML = `${typeof this._settings.nextButton == "string"?this._settings.nextButton:`${locale.last}`}`;
+			this._nextButton.innerHTML = `${typeof this.config.nextButton == "string"?this.config.nextButton:`${locale.last}`}`;
 		}
 	},
 	_setBodyClass() {
@@ -173,8 +173,8 @@ webix.protoUI({
 		}
 	},
 	_drawSteps(refresh) {
-		if(this._settings.steps[this._i]) {
-			let el = this._getEl(this._settings.steps[this._i].el);
+		if(this.config.steps[this._i]) {
+			let el = this._getEl(this.config.steps[this._i].el);
 			if(this._i === 0 && !refresh) {
 				this.callEvent("onBeforeStart", []);
 				setTimeout(() => { // for first init
