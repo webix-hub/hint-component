@@ -1,6 +1,7 @@
 {
 	"name": "hint",
 	"description": "Hint",
+	"version": "1.0.0",
 	"scripts": {
 		"start": "webpack-dev-server",
 		"watch": "webpack --watch",
