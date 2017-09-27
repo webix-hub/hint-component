@@ -1,6 +1,8 @@
 import "./hint.less";
 import { locale } from "./locales";
 
+webix.i18n.hint = webix.extend(webix.i18n, locale);
+
 webix.protoUI({
 	name: "hint",
 	defaults: {
@@ -65,8 +67,8 @@ webix.protoUI({
 				${this._i+1}/${this.config.steps.length}
 			</div>
 			<div class="webix_hint_buttons">
-				${settings.prevButton!== false?`<button class="webix_hint_button webix_hint_button_prev webix_hint_button_hidden">${typeof settings.prevButton == "string"?settings.prevButton:`${locale.prev}`}</button>`:""}
-				${settings.nextButton!== false?`<button class="webix_hint_button webix_hint_button_next">${typeof settings.nextButton == "string"?settings.nextButton:`${locale.next}`}</button>`:""}
+				${settings.prevButton!== false?`<button class="webix_hint_button webix_hint_button_prev webix_hint_button_hidden">${typeof settings.prevButton == "string"?settings.prevButton:`${webix.i18n.hint.prev}`}</button>`:""}
+				${settings.nextButton!== false?`<button class="webix_hint_button webix_hint_button_next">${typeof settings.nextButton == "string"?settings.nextButton:`${webix.i18n.hint.next}`}</button>`:""}
 			</div>
 			<button class="webix_hint_button_close" title="Close">&#10005;</button>
 		</div>`;
@@ -154,7 +156,7 @@ webix.protoUI({
 			webix.html.addCss(this._prevButton, "webix_hint_button_hidden");
 		}
 		if(this._i === this.config.steps.length -1) { // next button text
-			this._nextButton.innerHTML = `${typeof this.config.nextButton == "string"?this.config.nextButton:`${locale.last}`}`;
+			this._nextButton.innerHTML = `${typeof this.config.nextButton == "string"?this.config.nextButton:`${webix.i18n.hint.last}`}`;
 		}
 	},
 	_setBodyClass() {
