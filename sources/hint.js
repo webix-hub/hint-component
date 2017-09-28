@@ -14,24 +14,15 @@ webix.protoUI({
 	$init() {
 		this.$view.className += " webix_hint_view";
 		this._i = -1;
-		this._setBodyClass();
 		this.attachEvent("onDestruct", () => {
 			this._setBodyClass();
 			if(this._eventObjEsc) {
 				webix.eventRemove(this._eventObjEsc);
 			}
-			if(this._eventObjClose) {
-				webix.eventRemove(this._eventObjClose);
-			}
 		});
 		this._eventObjEsc = webix.event(document.body,"keydown", (e) => {
 			// escape
 			if (e.keyCode == 27){
-				this._skip();
-			}
-		});
-		this._eventObjClose = webix.event(document.documentElement,"click", (e) => {
-			if(e.target == document.documentElement) {
 				this._skip();
 			}
 		});
@@ -276,10 +267,10 @@ webix.protoUI({
 	},
 	_refresh(i, firstDraw) {
 		this._i = i;
-		if(!this._hint) {
-			this._setBodyClass();
-		} else {
-			this._hint.parentNode.removeChild(this._hint);
+		this._setBodyClass();
+		if(this._hint) {
+			if(this._hint.parentNode)
+				this._hint.parentNode.removeChild(this._hint);
 			webix.html.removeCss(this.getNode(), "webix_hint_animated");
 		}
 		this.show();
@@ -297,8 +288,10 @@ webix.protoUI({
 		return this._i;
 	},
 	resume(stepNumber) {
-		stepNumber = stepNumber || (this._i+1);
-		this._refresh(stepNumber);
+		if(this._hint){
+			stepNumber = stepNumber || (this._i+1);
+			this._refresh(stepNumber);
+		}
 	},
 	getSteps() {
 		return this.config.steps;
