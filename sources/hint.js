@@ -14,24 +14,15 @@ webix.protoUI({
 	$init() {
 		this.$view.className += " webix_hint_view";
 		this._i = -1;
-		this._setBodyClass();
 		this.attachEvent("onDestruct", () => {
 			this._setBodyClass();
 			if(this._eventObjEsc) {
 				webix.eventRemove(this._eventObjEsc);
 			}
-			if(this._eventObjClose) {
-				webix.eventRemove(this._eventObjClose);
-			}
 		});
 		this._eventObjEsc = webix.event(document.body,"keydown", (e) => {
 			// escape
 			if (e.keyCode == 27){
-				this._skip();
-			}
-		});
-		this._eventObjClose = webix.event(document.documentElement,"click", (e) => {
-			if(e.target == document.documentElement) {
 				this._skip();
 			}
 		});
@@ -85,8 +76,8 @@ webix.protoUI({
 		let docElem = document.documentElement;
 		let box = stepEl.getBoundingClientRect();
 		let elLeft = box.left + this._step.padding;
-		let highlightWidth = stepEl.getBoundingClientRect().width;
-		let highlightHeight = stepEl.getBoundingClientRect().height;
+		let highlightWidth = box.width;
+		let highlightHeight = box.height;
 		let hintLeft = elLeft - this._step.padding;
 		let hintWidth = this._hint.offsetWidth;
 		let hintHeight = this._hint.offsetHeight;
@@ -102,22 +93,28 @@ webix.protoUI({
 		if(elLeft - windowWidth > 0) {
 			elLeft = elLeft - windowWidth + hintWidth + highlightWidth;
 		}
+
 		if(windowHeight /2 < elTop) { // bottom
-			hintTop = elTop - hintHeight - padding - this._step.padding;
+			hintTop = elTop - hintHeight - padding - this._step.padding*2;
 		} else if(windowWidth /2 < elLeft && elLeft + hintWidth < windowWidth && highlightWidth + hintWidth < windowWidth) { // right
 			hintTop = highlightHeight / 2 + elTop - this._step.padding;
 			hintLeft = elLeft - hintWidth - this._step.padding - padding;
 		} else if(windowWidth /2 > elLeft && elLeft + hintWidth + highlightWidth < windowWidth) { // left
-			hintLeft = highlightWidth + elLeft + padding + this._step.padding;
+			hintLeft = highlightWidth + elLeft + padding;
+			hintTop = elTop - this._step.padding;
+		} else if(hintTop>windowHeight && hintHeight+highlightHeight<windowHeight)//top, but hint does not fit
+			hintTop = elTop - hintHeight - padding - this._step.padding*2;
+		else if(hintTop>windowHeight){ 	
+			hintLeft = elLeft - hintWidth - this._step.padding*2 - padding;
 			hintTop = elTop - this._step.padding;
 		}
 
 		if(hintLeft + hintWidth > windowWidth) { // for overflow
 			hintLeft = windowWidth - hintWidth;
-		} else if(hintTop < 0) {
-			hintTop = 0;
-		} else if(windowWidth < highlightWidth) {
-			hintLeft = 0;
+		} else if(hintTop < 0 || hintTop >windowHeight) {
+			hintTop = padding;
+		} else if(windowWidth < highlightWidth || hintLeft < 0) {
+			hintLeft = padding;
 		}
 		if(webix.env.mobile) {
 			stepEl.scrollIntoView(false);
@@ -276,10 +273,10 @@ webix.protoUI({
 	},
 	_refresh(i, firstDraw) {
 		this._i = i;
-		if(!this._hint) {
-			this._setBodyClass();
-		} else {
-			this._hint.parentNode.removeChild(this._hint);
+		this._setBodyClass();
+		if(this._hint) {
+			if(this._hint.parentNode)
+				this._hint.parentNode.removeChild(this._hint);
 			webix.html.removeCss(this.getNode(), "webix_hint_animated");
 		}
 		this.show();
@@ -297,8 +294,10 @@ webix.protoUI({
 		return this._i;
 	},
 	resume(stepNumber) {
-		stepNumber = stepNumber || (this._i+1);
-		this._refresh(stepNumber);
+		if(this._hint){
+			stepNumber = stepNumber || (this._i+1);
+			this._refresh(stepNumber);
+		}
 	},
 	getSteps() {
 		return this.config.steps;
