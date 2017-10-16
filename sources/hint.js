@@ -265,14 +265,8 @@ webix.protoUI({
 			this._i = -1;
 		}
 	},
-	start:function(){
-		this._refresh(0, true);
-	},
-	end:function(){
-		this._skip();
-	},
 	_refresh(i, firstDraw) {
-		this._i = i;
+		this._i = i-1;
 		this._setBodyClass();
 		if(this._hint) {
 			if(this._hint.parentNode)
@@ -290,8 +284,14 @@ webix.protoUI({
 			this._setBodyClass();
 		}
 	},
+	start() {
+		this._refresh(1, true);
+	},
+	end() {
+		this._skip();
+	},
 	getCurrentStep() {
-		return this._i;
+		return this._i+1;
 	},
 	resume(stepNumber) {
 		if(this._hint){
