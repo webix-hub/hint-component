@@ -10,7 +10,9 @@ import "./i18n/ru";
 import "./i18n/zh";
 
 export let locale = {
-	next: "Next",
-	prev: "Previous",
-	last: "End Tour"
+	hint: {
+		next: "Next",
+		prev: "Previous",
+		last: "End Tour"
+	}
 };
