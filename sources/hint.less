@@ -37,7 +37,11 @@ svg {
 	position: relative; 
 	height: 100%; 
 	width: 100%;
-	min-width: 100%; 
+	min-width: 100%;
+	.webix_window, .webix_popup {
+		pointer-events: all;
+		user-select: text;
+	}
 }
 
 .webix_hint {
