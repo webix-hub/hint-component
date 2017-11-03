@@ -39,6 +39,14 @@ svg {
   width: 100%;
   min-width: 100%;
 }
+.webix_hint_overflow .webix_window,
+.webix_hint_overflow .webix_popup {
+  pointer-events: all;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
 .webix_hint {
   position: fixed;
   pointer-events: all;
