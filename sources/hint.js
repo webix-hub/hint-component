@@ -19,6 +19,9 @@ webix.protoUI({
 			if(this._eventObjEsc) {
 				webix.eventRemove(this._eventObjEsc);
 			}
+			if(this._eventResize) {
+				webix.detachEvent(this._eventResize);
+			}
 		});
 		this._eventObjEsc = webix.event(document.body,"keydown", (e) => {
 			// escape
@@ -26,9 +29,13 @@ webix.protoUI({
 				this._skip();
 			}
 		});
+
+		this._eventResize = webix.attachEvent("onResize", () => {
+			this._refresh(this.getCurrentStep(), false, true);
+		});
 	},
 	steps_setter(config) {
-		var newConfig = [];
+		let newConfig = [];
 		for (var i = 0; i < config.length; i++) {
 			config[i].padding = config[i].padding || 0;
 			config[i].text = config[i].text || "";
@@ -65,6 +72,10 @@ webix.protoUI({
 		</div>`;
 	},
 	_setProperties(stepEl, refresh) {
+		if(!stepEl) {
+			return;
+		}
+
 		if(!webix.env.mobile) {
 			stepEl.scrollIntoView(false);
 		}
@@ -84,7 +95,7 @@ webix.protoUI({
 		let elTop = webix.env.mobile ? box.top + this._step.padding : box.top + this._step.padding + window.pageYOffset;
 		let hintTop = elTop + highlightHeight + this._step.padding + padding;
 		let windowWidth = window.innerWidth && docElem.clientWidth ? Math.min(window.innerWidth, docElem.clientWidth) : window.innerWidth || docElem.clientWidth || document.getElementsByTagName("body")[0].clientWidth;
-		let windowHeight = window.innerHeight && docElem.clientHeight ? Math.min(window.innerWidth, docElem.clientHeight) : window.innerHeight || docElem.clientHeight || document.getElementsByTagName("body")[0].clientHeight;
+		let windowHeight = window.innerHeight && docElem.clientHeight ? Math.min(window.innerHeight, docElem.clientHeight) : window.innerHeight || docElem.clientHeight || document.getElementsByTagName("body")[0].clientHeight;
 		
 		stepEl.style.pointerEvents = "all";
 		stepEl.style.userSelect = "initial";
@@ -102,16 +113,16 @@ webix.protoUI({
 		} else if(windowWidth /2 > elLeft && elLeft + hintWidth + highlightWidth < windowWidth) { // left
 			hintLeft = highlightWidth + elLeft + padding;
 			hintTop = elTop - this._step.padding;
-		} else if(hintTop>windowHeight && hintHeight+highlightHeight<windowHeight)//top, but hint does not fit
+		} else if(hintTop>windowHeight && hintHeight+highlightHeight<windowHeight){//top, but hint does not fit
 			hintTop = elTop - hintHeight - padding - this._step.padding*2;
-		else if(hintTop>windowHeight){ 	
+		} else if(hintTop >windowHeight || hintTop+hintHeight>windowHeight){
 			hintLeft = elLeft - hintWidth - this._step.padding*2 - padding;
 			hintTop = elTop - this._step.padding;
 		}
 
 		if(hintLeft + hintWidth > windowWidth) { // for overflow
 			hintLeft = windowWidth - hintWidth;
-		} else if(hintTop < 0 || hintTop >windowHeight) {
+		} else if(hintTop < 0 || hintTop > windowHeight) {
 			hintTop = padding;
 		} else if(windowWidth < highlightWidth || hintLeft < 0) {
 			hintLeft = padding;
@@ -265,13 +276,15 @@ webix.protoUI({
 			this._i = -1;
 		}
 	},
-	_refresh(i, firstDraw) {
+	_refresh(i, firstDraw, resize) {
 		this._i = i-1;
 		this._setBodyClass();
 		if(this._hint) {
 			if(this._hint.parentNode)
 				this._hint.parentNode.removeChild(this._hint);
-			webix.html.removeCss(this.getNode(), "webix_hint_animated");
+			if(!resize) {
+				webix.html.removeCss(this.getNode(), "webix_hint_animated");
+			}
 		}
 		this.show();
 		if(firstDraw) {
@@ -295,7 +308,7 @@ webix.protoUI({
 	},
 	resume(stepNumber) {
 		if(this._hint){
-			stepNumber = stepNumber || (this._i+1);
+			stepNumber = stepNumber || (this._i+1) || 1;
 			this._refresh(stepNumber);
 		}
 	},
