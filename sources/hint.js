@@ -158,12 +158,15 @@ webix.protoUI({
 		}
 		this._setElEvents(el);
 
-		if(this._i > 0) { // previous button show
-			webix.html.removeCss(this._prevButton, "webix_hint_button_hidden");
-		} else if(this._prevButton && !this._prevButton.classList.contains("webix_hint_button_hidden")) {
-			webix.html.addCss(this._prevButton, "webix_hint_button_hidden");
+		if(this._prevButton) {
+			if(this._i > 0) { // previous button show
+				webix.html.removeCss(this._prevButton, "webix_hint_button_hidden");
+			} else if(this._prevButton && !this._prevButton.classList.contains("webix_hint_button_hidden")) {
+				webix.html.addCss(this._prevButton, "webix_hint_button_hidden");
+			}
 		}
-		if(this._i === this.config.steps.length -1) { // next button text
+		
+		if(this._i === this.config.steps.length -1 && this._nextButton) { // next button text
 			this._nextButton.innerHTML = `${typeof this.config.nextButton == "string"?this.config.nextButton:`${webix.i18n.hint.last}`}`;
 		}
 	},
