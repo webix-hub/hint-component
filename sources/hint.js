@@ -15,7 +15,10 @@ webix.protoUI({
 		this.$view.className += " webix_hint_view";
 		this._i = -1;
 		this.attachEvent("onDestruct", () => {
-			this._setBodyClass();
+			this._setBodyClass("remove");
+			if(this._eventObj) {
+				webix.eventRemove(this._eventObj);
+			}
 			if(this._eventObjEsc) {
 				webix.eventRemove(this._eventObjEsc);
 			}
@@ -31,7 +34,7 @@ webix.protoUI({
 		});
 
 		this._eventResize = webix.attachEvent("onResize", () => {
-			if(this.getCurrentStep()) {
+			if(this.getCurrentStep() && this._i !== this.config.steps.length) {
 				this._refresh(this.getCurrentStep(), false, true);
 			}
 		});
@@ -174,9 +177,9 @@ webix.protoUI({
 			this._nextButton.innerHTML = `${typeof this.config.nextButton == "string"?this.config.nextButton:`${webix.i18n.hint.last}`}`;
 		}
 	},
-	_setBodyClass() {
+	_setBodyClass(remove) {
 		let body = document.body;
-		if(body.classList.contains("webix_hint_overflow")) {
+		if(body.classList.contains("webix_hint_overflow") || remove) {
 			webix.html.removeCss(body, "webix_hint_overflow");
 		} else {
 			webix.html.addCss(body, "webix_hint_overflow");
@@ -274,10 +277,9 @@ webix.protoUI({
 	},
 	_skip() {
 		if (this._i === -1) return;
-
 		this.callEvent("onSkip", [this._i+1]);
 		this.hide();
-		this._setBodyClass();
+		this._setBodyClass("remove");
 		if(this._i === this.config.steps.length) {
 			this.callEvent("onEnd", [this._i+1]);
 		}
