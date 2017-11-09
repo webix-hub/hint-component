@@ -31,7 +31,9 @@ webix.protoUI({
 		});
 
 		this._eventResize = webix.attachEvent("onResize", () => {
-			this._refresh(this.getCurrentStep(), false, true);
+			if(this.getCurrentStep()) {
+				this._refresh(this.getCurrentStep(), false, true);
+			}
 		});
 	},
 	steps_setter(config) {
@@ -130,9 +132,11 @@ webix.protoUI({
 		if(webix.env.mobile) {
 			stepEl.scrollIntoView(false);
 		}
-		this._hint.style.cssText = `top:${hintTop}px; left:${hintLeft}px;`;
-		this._setAttributes(this.$view.getElementsByClassName("webix_hint_overlay_hole_el")[0], {"x":elLeft-this._step.padding*2, "y":elTop-this._step.padding*2, "width":highlightWidth+this._step.padding *2, "height":highlightHeight+this._step.padding*2});
-		webix.html.addCss(this.getNode(), "webix_hint_animated");
+		setTimeout(() => {
+			this._hint.style.cssText = `top:${hintTop}px; left:${hintLeft}px;`;
+			this._setAttributes(this.$view.getElementsByClassName("webix_hint_overlay_hole_el")[0], {"x":elLeft-this._step.padding*2, "y":elTop-this._step.padding*2, "width":highlightWidth+this._step.padding *2, "height":highlightHeight+this._step.padding*2});
+			webix.html.addCss(this.getNode(), "webix_hint_animated");
+		}, 500);
 	},
 	_setAttributes(el, attrs) {
 		for(var key in attrs) {
@@ -244,14 +248,14 @@ webix.protoUI({
 		action = action || "next";
 		if (this._step.next && action === "next" || this._step.previous && action === "previous") {
 			let promise = this._step[action]();
-			if (promise.then){
-				return promise.then( () => {
+			if (promise){
+				promise.resolve().then(() => {
 					this._nextStep(stepEl, action);
 				});
 			}
+		} else {
+			this._nextStep(stepEl, action);
 		}
-
-		this._nextStep(stepEl, action);
 	},
 	_nextStep(stepEl, action) {
 		let el = this._getEl(this._step.el);
@@ -276,18 +280,15 @@ webix.protoUI({
 		this._setBodyClass();
 		if(this._i === this.config.steps.length) {
 			this.callEvent("onEnd", [this._i+1]);
-			this._i = -1;
 		}
 	},
-	_refresh(i, firstDraw, resize) {
+	_refresh(i, firstDraw) {
 		this._i = i-1;
 		this._setBodyClass();
 		if(this._hint) {
 			if(this._hint.parentNode)
 				this._hint.parentNode.removeChild(this._hint);
-			if(!resize) {
-				webix.html.removeCss(this.getNode(), "webix_hint_animated");
-			}
+			webix.html.removeCss(this.getNode(), "webix_hint_animated");
 		}
 		this.show();
 		if(firstDraw) {
@@ -311,7 +312,7 @@ webix.protoUI({
 	},
 	resume(stepNumber) {
 		if(this._hint){
-			stepNumber = stepNumber || (this._i+1) || 1;
+			stepNumber = stepNumber || 1;
 			this._refresh(stepNumber);
 		}
 	},

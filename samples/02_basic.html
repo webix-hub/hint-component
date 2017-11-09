@@ -22,9 +22,7 @@
 						$$('mytable').getPager().select(0);
 						this.config.nextButton = "Next";
 
-						webix.delay(function(){
-							$$("hint").resume();
-						});
+						this.resume();
 					},
 					onNext: function(stepNumber) {
 						if(stepNumber === this.config.steps.length - 1) {
