@@ -32,12 +32,7 @@ webix.protoUI({
 				this._skip();
 			}
 		});
-
-		this._eventResize = webix.attachEvent("onResize", () => {
-			if(this.getCurrentStep() && this._i !== this.config.steps.length) {
-				this._refresh(this.getCurrentStep(), false, true);
-			}
-		});
+		this._setResize();
 	},
 	steps_setter(config) {
 		let newConfig = [];
@@ -140,6 +135,13 @@ webix.protoUI({
 			this._setAttributes(this.$view.getElementsByClassName("webix_hint_overlay_hole_el")[0], {"x":elLeft-this._step.padding*2, "y":elTop-this._step.padding*2, "width":highlightWidth+this._step.padding *2, "height":highlightHeight+this._step.padding*2});
 			webix.html.addCss(this.getNode(), "webix_hint_animated");
 		}, 500);
+	},
+	_setResize() {
+		this._eventResize = webix.attachEvent("onResize", () => {
+			if(this.getCurrentStep() && this._i !== this.config.steps.length) {
+				this._refresh(this.getCurrentStep(), false, true);
+			}
+		});
 	},
 	_setAttributes(el, attrs) {
 		for(var key in attrs) {
@@ -277,6 +279,14 @@ webix.protoUI({
 	},
 	_skip() {
 		if (this._i === -1) return;
+		if(this._eventObj) {
+			webix.eventRemove(this._eventObj);
+			delete this._eventObj;
+		}
+		if(this._eventResize) {
+			webix.detachEvent(this._eventResize);
+			delete this._eventResize;
+		}
 		this.callEvent("onSkip", [this._i+1]);
 		this.hide();
 		this._setBodyClass("remove");
@@ -285,6 +295,9 @@ webix.protoUI({
 		}
 	},
 	_refresh(i, firstDraw) {
+		if(!this._eventResize) {
+			this._setResize();
+		}
 		this._i = i-1;
 		this._setBodyClass();
 		if(this._hint) {
