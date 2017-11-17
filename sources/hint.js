@@ -130,7 +130,8 @@ webix.protoUI({
 		if(webix.env.mobile) {
 			stepEl.scrollIntoView(false);
 		}
-		setTimeout(() => {
+		if(this._timer) {clearTimeout(this._timer);}
+		this._timer = setTimeout(() => {
 			this._hint.style.cssText = `top:${hintTop}px; left:${hintLeft}px;`;
 			this._setAttributes(this.$view.getElementsByClassName("webix_hint_overlay_hole_el")[0], {"x":elLeft-this._step.padding*2, "y":elTop-this._step.padding*2, "width":highlightWidth+this._step.padding *2, "height":highlightHeight+this._step.padding*2});
 			webix.html.addCss(this.getNode(), "webix_hint_animated");
