@@ -30,6 +30,13 @@
 						} else {
 							this.config.nextButton = "Next";
 						}
+					},
+					onPrevious: function(stepNumber) {
+						if(stepNumber === this.config.steps.length) {
+							this.config.nextButton = "Restart";
+						} else {
+							this.config.nextButton = "Next";
+						}
 					}
 				},
 				steps: [

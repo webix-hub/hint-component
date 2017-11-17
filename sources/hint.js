@@ -266,14 +266,14 @@ webix.protoUI({
 		el.style.pointerEvents = "";
 		el.style.userSelect = "";
 		el.blur();
-		this._i++;
 		if(action !== "previous") {
+			this._i++;
 			this._drawSteps();
 			this.callEvent("onNext", [this._i+1]);
 		}
 		if(action === "previous") {
-			this._refresh(this._i-=1, false);
-			this.callEvent("onPrevious", [this._i+1]);
+			this.callEvent("onPrevious", [this._i]);
+			this._refresh(this._i--, false);
 		}
 	},
 	_skip() {
