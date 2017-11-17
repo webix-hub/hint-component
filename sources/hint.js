@@ -220,9 +220,6 @@ webix.protoUI({
 		}
 		if(this._prevButton) {
 			webix.event(this._prevButton, "click", () => {
-				webix.html.removeCss(this.getNode(), "webix_hint_animated");
-				this._hint.parentNode.removeChild(this._hint);
-				this._i -= 2;
 				this._next(el, "previous");
 			});
 		}
@@ -257,6 +254,8 @@ webix.protoUI({
 				promise.resolve().then(() => {
 					this._nextStep(stepEl, action);
 				});
+			} else {
+				this._nextStep(stepEl, action);
 			}
 		} else {
 			this._nextStep(stepEl, action);
@@ -273,7 +272,7 @@ webix.protoUI({
 			this.callEvent("onNext", [this._i+1]);
 		}
 		if(action === "previous") {
-			this._drawSteps("previous");
+			this._refresh(this._i-=1, false);
 			this.callEvent("onPrevious", [this._i+1]);
 		}
 	},
