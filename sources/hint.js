@@ -182,9 +182,9 @@ webix.protoUI({
 	},
 	_setBodyClass(remove) {
 		let body = document.body;
-		if(body.classList.contains("webix_hint_overflow") || remove) {
+		if(remove) {
 			webix.html.removeCss(body, "webix_hint_overflow");
-		} else {
+		} else if(!body.classList.contains("webix_hint_overflow")) {
 			webix.html.addCss(body, "webix_hint_overflow");
 		}
 	},
@@ -313,7 +313,7 @@ webix.protoUI({
 			this._drawSteps();
 		} else {
 			this._drawSteps("refresh");
-			this._setBodyClass();
+			console.log("refresh");
 		}
 	},
 	start() {
