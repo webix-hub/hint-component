@@ -313,7 +313,6 @@ webix.protoUI({
 			this._drawSteps();
 		} else {
 			this._drawSteps("refresh");
-			console.log("refresh");
 		}
 	},
 	start() {
