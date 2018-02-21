@@ -129,17 +129,8 @@ webix.protoUI({
 		} else if(windowWidth < highlightWidth || hintLeft < 0) {
 			hintLeft = padding;
 		}
-
-		if(this._isInteger(this._step.top)) {
-			hintTop = this._step.top;
-		} else if(this._isInteger(this.config.top)){
-			hintTop = this.config.top;
-		}
-		if(this._isInteger(this._step.left)) {
-			hintLeft = this._step.left;
-		} else if(this._isInteger(this.config.left)){
-			hintLeft = this.config.left;
-		}
+		hintTop = this._setPos("top")?this._setPos("top"):hintTop;
+		hintLeft = this._setPos("left")?this._setPos("left"):hintLeft;
 
 		if(webix.env.mobile) {
 			stepEl.scrollIntoView(false);
@@ -150,6 +141,13 @@ webix.protoUI({
 			this._setAttributes(this.$view.getElementsByClassName("webix_hint_overlay_hole_el")[0], {"x":elLeft-this._step.padding*2, "y":elTop-this._step.padding*2, "width":highlightWidth+this._step.padding *2, "height":highlightHeight+this._step.padding*2});
 			webix.html.addCss(this.getNode(), "webix_hint_animated");
 		}, 500);
+	},
+	_setPos(name) {
+		if(this._isInteger(this._step[name])) {
+			return this._step[name];
+		} else if(this._isInteger(this.config[name]) && this._step[name] !== false){
+			return this.config[name];
+		}
 	},
 	_setResize() {
 		this._eventResize = webix.attachEvent("onResize", () => {
