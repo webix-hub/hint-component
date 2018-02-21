@@ -130,11 +130,15 @@ webix.protoUI({
 			hintLeft = padding;
 		}
 
-		if(this._isInteger(this.config.top) || this._isInteger(this._step.top)) {
-			hintTop = this._step.top || this.config.top;
+		if(this._isInteger(this._step.top)) {
+			hintTop = this._step.top;
+		} else if(this._isInteger(this.config.top)){
+			hintTop = this.config.top;
 		}
-		if(this._isInteger(this.config.left) || this._isInteger(this._step.left)) {
-			hintLeft = this._step.left || this.config.left;
+		if(this._isInteger(this._step.left)) {
+			hintLeft = this._step.left;
+		} else if(this._isInteger(this.config.left)){
+			hintLeft = this.config.left;
 		}
 
 		if(webix.env.mobile) {
