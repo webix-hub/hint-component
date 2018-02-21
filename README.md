@@ -166,7 +166,7 @@ Both configs can be set to either a boolean value to enable/disable them or a st
 
 ## Position
 
-Positionn is set automatically by deafult. In addition, you can provide top and left values in hint config or any step.
+Positionn is set automatically by deafult. Alternatively, you can provide top and left values in hint config or any step.
 
 ~~~js
 webix.ui({
