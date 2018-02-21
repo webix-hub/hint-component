@@ -164,6 +164,36 @@ webix.ui({
 
 Both configs can be set to either a boolean value to enable/disable them or a string value with a new caption for the button. The default value is true.
 
+## Position
+
+Positionn is set automatically by deafult. In addition, you can provide top and left values in hint config or any step.
+
+~~~js
+webix.ui({
+    view: "hint",
+    id: "hint",
+    top: 10, // value for all steps
+    steps: [
+        {
+            el: ".div1",
+            title: "Welcome to Booking App!",
+            text: "Click here to check out regular flights",
+            event: "click",
+            top: 50, // value for this step
+            left: 0
+        },
+        {
+            el: ".div2",
+            title: "Get Flights Info in a Click!",
+            text: "Click here to take a look at all flights info",
+            event:"click"
+        }
+    ]
+});
+~~~
+
+The position of the hint is calculated relative to the left top corner.
+
 ## Async steps
 
 If you need to fire some action before showing the next step of tutorial, you can use "next" property of the step. It can be defined as a function with an arbitrary code, which can return a promise. Hint will activate next step on promise resolving. For example:
