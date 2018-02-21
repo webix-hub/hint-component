@@ -9,7 +9,9 @@ webix.protoUI({
 		steps: [],
 		borderless: true,
 		nextButton: true,
-		prevButton: true
+		prevButton: true,
+		top: false,
+		left: false
 	},
 	$init() {
 		this.$view.className += " webix_hint_view";
@@ -127,6 +129,14 @@ webix.protoUI({
 		} else if(windowWidth < highlightWidth || hintLeft < 0) {
 			hintLeft = padding;
 		}
+
+		if(this._isInteger(this.config.top) || this._isInteger(this._step.top)) {
+			hintTop = this._step.top || this.config.top;
+		}
+		if(this._isInteger(this.config.left) || this._isInteger(this._step.left)) {
+			hintLeft = this._step.left || this.config.left;
+		}
+
 		if(webix.env.mobile) {
 			stepEl.scrollIntoView(false);
 		}
@@ -143,6 +153,12 @@ webix.protoUI({
 				this._refresh(this.getCurrentStep(), false, true);
 			}
 		});
+	},
+	_isInteger(value) {
+		if(Number.isInteger) return Number.isInteger(value);
+		return typeof value === "number" && 
+			isFinite(value) && 
+			Math.floor(value) === value;
 	},
 	_setAttributes(el, attrs) {
 		for(var key in attrs) {
