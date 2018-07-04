@@ -56,7 +56,7 @@ webix.protoUI({
 			</defs>
 			<rect class="webix_hint_overlay_hole" width="100%" height="100%" mask="url(#hole)" />
 		</svg>`;
-		this._setProperties(stepEl, false, 1);
+		this._setProperties(stepEl);
 		this.callEvent("onAfterStart", []);
 	},
 	_drawHint() {
@@ -74,7 +74,7 @@ webix.protoUI({
 			<button class="webix_hint_button_close" title="Close">&#10005;</button>
 		</div>`;
 	},
-	_setProperties(stepEl, refresh, timeout) {
+	_setProperties(stepEl, refresh) {
 		if(!stepEl) {
 			return;
 		}
@@ -141,7 +141,7 @@ webix.protoUI({
 			this._hint.style.cssText = `top:${hintTop}px; left:${hintLeft}px;`;
 			this._setAttributes(this.$view.getElementsByClassName("webix_hint_overlay_hole_el")[0], {"x":elLeft-this._step.padding*2, "y":elTop-this._step.padding*2, "width":highlightWidth+this._step.padding *2, "height":highlightHeight+this._step.padding*2});
 			webix.html.addCss(this.getNode(), "webix_hint_animated");
-		}, timeout || this.config.stepTimeout);
+		}, this.config.stepTimeout);
 	},
 	_setPos(name) {
 		if(this._isInteger(this._step[name])) {
