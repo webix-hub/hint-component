@@ -61,8 +61,8 @@ webix.protoUI({
 	_drawHint() {
 		let settings = this.config;
 		this.$view.innerHTML += `<div class="webix_hint">
-			<span class='webix_hint_title'>${this._step.title?this._step.title:""}</span>
-			<p class="webix_hint_label">${this._step.text}</p>
+			<div class='webix_hint_title'>${this._step.title?this._step.title:""}</div>
+			<div class="webix_hint_label">${this._step.text}</div>
 			<div class="webix_hint_progress">
 				${this._i+1}/${this.config.steps.length}
 			</div>
