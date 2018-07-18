@@ -11,7 +11,8 @@ webix.protoUI({
 		nextButton: true,
 		prevButton: true,
 		top: false,
-		left: false
+		left: false,
+		stepTimeout:500
 	},
 	$init() {
 		this.$view.className += " webix_hint_view";
@@ -140,7 +141,7 @@ webix.protoUI({
 			this._hint.style.cssText = `top:${hintTop}px; left:${hintLeft}px;`;
 			this._setAttributes(this.$view.getElementsByClassName("webix_hint_overlay_hole_el")[0], {"x":elLeft-this._step.padding*2, "y":elTop-this._step.padding*2, "width":highlightWidth+this._step.padding *2, "height":highlightHeight+this._step.padding*2});
 			webix.html.addCss(this.getNode(), "webix_hint_animated");
-		}, 500);
+		}, this.config.stepTimeout);
 	},
 	_setPos(name) {
 		if(this._isInteger(this._step[name])) {
