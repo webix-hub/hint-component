@@ -36,8 +36,5 @@
 		"webpack-dev-server": "^2.4.2",
 		"webpack-livereload-plugin": "^0.5.3",
 		"webpack-stream": "^3.2.0"
-	},
-	"dependencies": {
-		"webix-skin-material": "^4.4.1"
 	}
 }
