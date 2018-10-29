@@ -1,7 +1,5 @@
 import "./hint.less";
-import { locale } from "./locales";
-
-webix.i18n.hint = webix.extend(webix.i18n, locale).hint;
+import "./locales";
 
 webix.protoUI({
 	name: "hint",

@@ -1,8 +1,9 @@
 /*German (Germany) locale*/
-export let de = webix.i18n.locales["de-DE"] = {
+import extend from "./extend";
+extend("de-DE", {
 	hint:{
 		next: "Nächster",
 		prev: "Bisherige",
 		last: "Ende Tour"
 	}
-};
+});

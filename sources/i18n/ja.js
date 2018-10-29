@@ -1,7 +1,8 @@
-export let ja = webix.i18n.locales["ja-JP"]={
+import extend from "./extend";
+extend("ja-JP", {
 	hint:{
 		next: "次",
 		prev: "前",
 		last: "終了ツアー"
 	}
-};
+});

@@ -11,7 +11,6 @@ var config = {
 		publicPath:"/codebase/",
 		filename: '[name].js'
 	},
-	devtool: 'inline-source-map',
 	module: {
 		rules: [
 			{

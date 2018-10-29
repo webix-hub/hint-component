@@ -1,7 +1,8 @@
-export let fr = webix.i18n.locales["fr-FR"]={
+import extend from "./extend";
+extend("fr-FR", {
 	hint:{
 		next: "Prochain",
 		prev: "Précédent",
 		last: "End Tour"
 	}
-};
+});

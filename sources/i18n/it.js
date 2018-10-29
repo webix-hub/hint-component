@@ -1,8 +1,9 @@
 /*Italian (Italy) locale*/
-export let it = webix.i18n.locales["it-IT"] = {
+import extend from "./extend";
+extend("it-IT", {
 	hint:{
 		next: "Seguente",
 		prev: "Precedente",
 		last: "End Tour"
 	}
-};
+});
